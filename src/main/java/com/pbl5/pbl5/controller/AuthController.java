@@ -41,7 +41,7 @@ public class AuthController {
                 session.setAttribute("currentUser", user);
                 return "redirect:/";
             } else {
-                redirectAttributes.addFlashAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
+                redirectAttributes.addFlashAttribute("error", "Username or password is incorrect! Please try again.");
                 return "redirect:/login";
             }
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class AuthController {
                                      RedirectAttributes redirectAttributes) {
         try {
             userService.registerNewUser(user);
-            redirectAttributes.addFlashAttribute("success", "Đăng ký tài khoản thành công! Vui lòng đăng nhập.");
+            redirectAttributes.addFlashAttribute("success", "Register successfully! Please login.");
             return "redirect:/login";
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -118,7 +118,7 @@ public class AuthController {
         try {
             User updatedUser = userService.updateUsername(currentUser.getId(), newUsername, password);
             session.setAttribute("currentUser", updatedUser);
-            redirectAttributes.addFlashAttribute("success", "Tên đăng nhập đã được cập nhật thành công!");
+            redirectAttributes.addFlashAttribute("success", "Username updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
@@ -142,7 +142,7 @@ public class AuthController {
         try {
             User updatedUser = userService.updateEmail(currentUser.getId(), newEmail, password);
             session.setAttribute("currentUser", updatedUser);
-            redirectAttributes.addFlashAttribute("success", "Địa chỉ email đã được cập nhật thành công!");
+            redirectAttributes.addFlashAttribute("success", "Email updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }

@@ -70,7 +70,6 @@
           currentQuestionIndex + 1
         }: ${question.questionText}`;
 
-        // Load image if exists
         const imageBox = document.getElementById("image-box");
         if (question.image) {
           if (question.image.startsWith("http")) {
@@ -82,7 +81,6 @@
           imageBox.innerHTML = "";
         }
 
-        // Load options
         const optionsList = document.getElementById("options-list");
         optionsList.innerHTML = "";
 
@@ -100,7 +98,6 @@
       }
 
       function selectAnswer(element, selectedAnswer) {
-        // Nếu đã trả lời rồi thì không cho chọn nữa
         if (answeredQuestions[currentQuestionIndex] !== undefined) return;
 
         const optionsList = document.getElementById("options-list");
@@ -108,24 +105,21 @@
 
         if (selectedAnswer === correctAnswer) {
           element.classList.add("correct");
-          answeredQuestions[currentQuestionIndex] = true; // Đánh dấu đúng
+          answeredQuestions[currentQuestionIndex] = true; 
         } else {
           element.classList.add("incorrect");
-          // Tô xanh đáp án đúng
           optionItems.forEach(li => {
             if (li.innerText.startsWith(correctAnswer + ":")) {
               li.classList.add("correct");
             }
           });
-          answeredQuestions[currentQuestionIndex] = false; // Đánh dấu sai
+          answeredQuestions[currentQuestionIndex] = false; 
         }
 
-        // Sau khi chọn, disable tất cả các đáp án
         optionItems.forEach(li => {
           li.style.pointerEvents = "none";
         });
 
-        // Gửi dữ liệu về server
         const question = questions[currentQuestionIndex];
         const isCorrect = (selectedAnswer === correctAnswer);
         fetch('/vocab-test/answer', {
@@ -174,10 +168,10 @@
 
         if (userAnswer === correctAnswer) {
           alert("Correct!");
-          answeredQuestions[currentQuestionIndex] = true; // Đánh dấu đúng
+          answeredQuestions[currentQuestionIndex] = true; 
         } else {
           alert("Incorrect!");
-          answeredQuestions[currentQuestionIndex] = false; // Đánh dấu sai
+          answeredQuestions[currentQuestionIndex] = false;
           inputs.forEach((input) => (input.value = ""));
           if (inputs.length > 0) {
             inputs[0].focus();
@@ -193,7 +187,7 @@
 
         if (currentQuestionIndex === questions.length - 1) {
           nextBtn.innerText = "Complete";
-          nextBtn.onclick = completeTest; // Gán hàm hoàn thành bài test
+          nextBtn.onclick = completeTest; 
         } else {
           nextBtn.innerText = "Next";
           nextBtn.onclick = nextQuestion;
@@ -206,7 +200,6 @@
         ).length;
         incorrectCount = questions.length - correctCount;
 
-        // Chuẩn bị dữ liệu gửi về server
         const results = questions.map((q, idx) => ({
           questionId: q.id,
           selectedOptionLabel: answeredQuestions[idx] !== undefined

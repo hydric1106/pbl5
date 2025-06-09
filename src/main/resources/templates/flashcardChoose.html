@@ -5,27 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flashcard Choose</title>
     <link rel="stylesheet" th:href="@{/css/flashcardChoose.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
   </head>
   <body>
-    <a class="back-btn" onclick="goBack()">←</a>
+    <!-- <div class="header"> -->
+    <div th:replace="header :: header"></div>
+    <div class="main-content">
+      <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <div class="container">
+        <div class="title">Choose an action:</div>
 
-    <div class="title">Choose an action:</div>
+      <div class="card-container">
+        <div
+          class="card-option"
+          onclick="window.location.href='/flashcard-create'"
+        >
+          <img
+            src="https://media.istockphoto.com/id/688550958/vi/vec-to/d%E1%BA%A5u-c%E1%BB%99ng-m%C3%A0u-%C4%91en-k%C3%BD-hi%E1%BB%87u-t%C3%ADch-c%E1%BB%B1c.jpg?s=612x612&w=0&k=20&c=ZJYNJ7-s-CEFxNFaj6y4aYQmLlFe9wETgoAX5xj_wWk="
+            alt="Create New Set"
+          />
+          <div class="card-option-text">Create a new set</div>
+        </div>
 
-    <div class="card-container">
-      <div class="card-option" onclick="window.location.href='/flashcard-create'">
-        <img
-          src="https://media.istockphoto.com/id/688550958/vi/vec-to/d%E1%BA%A5u-c%E1%BB%99ng-m%C3%A0u-%C4%91en-k%C3%BD-hi%E1%BB%87u-t%C3%ADch-c%E1%BB%B1c.jpg?s=612x612&w=0&k=20&c=ZJYNJ7-s-CEFxNFaj6y4aYQmLlFe9wETgoAX5xj_wWk="
-          alt="Create New Set"
-        />
-        <div class="card-option-text">Create a new set</div>
+        <div class="card-option" onclick="window.location.href='/flashcard'">
+          <img
+            src="https://play-lh.googleusercontent.com/FnsgGVK7BsdH3ckrTFq8OhBNlbZMlNOUEU-AJF85aGmwepitRbKK5a_4xgmXZ2f5FA"
+            alt="Choose Available Set"
+          />
+          <div class="card-option-text">Choose an available set</div>
+        </div>
       </div>
-
-      <div class="card-option" onclick="window.location.href='/flashcard'">
-        <img
-          src="https://play-lh.googleusercontent.com/FnsgGVK7BsdH3ckrTFq8OhBNlbZMlNOUEU-AJF85aGmwepitRbKK5a_4xgmXZ2f5FA"
-          alt="Choose Available Set"
-        />
-        <div class="card-option-text">Choose an available set</div>
       </div>
     </div>
 

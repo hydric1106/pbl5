@@ -5,19 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grammar Lessons</title>
     <link rel="stylesheet" th:href="@{/css/grammarList.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
   </head>
   <body>
-    <header class="header">
-      <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-      <span class="navbar-brand">English EEZ</span>
-    </header>
+    <div th:replace="header :: header"></div>
 
     <nav class="sidebar">
-      <h2>Lessons</h2>
+      <div class="top-list">
+        <button class="back-btn" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <span>Lessons</span>
+      </div>
       <ul id="lesson-list">
         <li
           th:each="lesson, stat : ${lessons}"
@@ -76,6 +84,11 @@
         document.getElementById("lessonForm").submit();
       }
       /*]]>*/
+
+      function goBack() {
+        window.location.href = "/";
+      }
+      
     </script>
   </body>
 </html>

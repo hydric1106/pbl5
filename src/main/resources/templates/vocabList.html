@@ -5,19 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vocabulary Topics - EnglishEEZ</title>
     <link rel="stylesheet" th:href="@{/css/vocabList.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
   </head>
   <body>
-    <header class="header">
-      <button class="back-btn" onclick="goBack()">←</button>
-      <a class="name navbar-brand" href="/" title="" rel="home">EnglishEEZ</a>
-    </header>
+    <div th:replace="header :: header"></div>
 
     <nav class="sidebar">
-      <h2>Topics</h2>
+      <div class="top-list">
+        <button class="back-btn" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <span>Topics</span>
+      </div>
       <ul id="topic-list">
         <li
           th:each="category : ${categories}"

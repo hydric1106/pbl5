@@ -17,21 +17,17 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Giữ nguyên các phương thức hiện có
     public User registerNewUser(User user) {
-        // Kiểm tra username và email đã tồn tại chưa
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Tên đăng nhập đã tồn tại!");
+            throw new RuntimeException("Username already exists!");
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email đã được sử dụng!");
+            throw new RuntimeException("Email already exists!");
         }
 
-        // Mã hóa mật khẩu trước khi lưu
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
-        // Mặc định là USER
         user.setRole("USER");
         user.setActive(true);
         
@@ -58,89 +54,63 @@ public class UserService {
         return userRepository.save(user);
     }
     
-    // Thêm các phương thức mới
-    
-    /**
-     * Tìm người dùng theo ID
-     */
     public User findById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng!"));
+                .orElseThrow(() -> new RuntimeException("User not found!"));
     }
     
-    /**
-     * Cập nhật tên đăng nhập
-     */
     public User updateUsername(Integer userId, String newUsername, String password) {
         User user = findById(userId);
         
-        // Xác thực mật khẩu
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Mật khẩu không chính xác!");
+            throw new RuntimeException("Wrong pasword!");
         }
         
-        // Kiểm tra tên đăng nhập mới có tồn tại chưa
         if (userRepository.existsByUsername(newUsername)) {
-            throw new RuntimeException("Tên đăng nhập đã tồn tại!");
+            throw new RuntimeException("Username already exists!");
         }
         
         user.setUsername(newUsername);
         return userRepository.save(user);
     }
     
-    /**
-     * Cập nhật email
-     */
     public User updateEmail(Integer userId, String newEmail, String password) {
         User user = findById(userId);
         
-        // Xác thực mật khẩu
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Mật khẩu không chính xác!");
+            throw new RuntimeException("Wrong password!");
         }
         
-        // Kiểm tra email mới có tồn tại chưa
         if (userRepository.existsByEmail(newEmail)) {
-            throw new RuntimeException("Email đã được sử dụng!");
+            throw new RuntimeException("Email already exists!");
         }
         
         user.setEmail(newEmail);
         return userRepository.save(user);
     }
     
-    /**
-     * Đổi mật khẩu
-     */
     public void changePassword(Integer userId, String currentPassword, String newPassword) {
         User user = findById(userId);
         
-        // Xác thực mật khẩu hiện tại
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new RuntimeException("Mật khẩu hiện tại không chính xác!");
+            throw new RuntimeException("The current password is incorrect!");
         }
         
-        // Không cho phép đặt mật khẩu mới giống mật khẩu cũ
         if (passwordEncoder.matches(newPassword, user.getPassword())) {
-            throw new RuntimeException("Mật khẩu mới không được giống mật khẩu cũ!");
+            throw new RuntimeException("The new password must not be the same as the old password!");
         }
         
-        // Mã hóa và lưu mật khẩu mới
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
     
-    /**
-     * Xóa tài khoản
-     */
     public void deleteAccount(Integer userId, String password) {
         User user = findById(userId);
         
-        // Xác thực mật khẩu
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Mật khẩu không chính xác!");
+            throw new RuntimeException("Wrong password!");
         }
         
-        // Xóa người dùng
         userRepository.delete(user);
     }
 }

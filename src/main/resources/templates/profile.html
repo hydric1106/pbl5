@@ -1,149 +1,87 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile - EnglishEEZ</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <style>
-        .profile-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: #555;
-        }
-        
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .profile-info h1 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .profile-info p {
-            margin: 5px 0;
-            color: #666;
-        }
-        
-        .profile-section {
-            margin-top: 30px;
-        }
-        
-        .profile-section h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            color: #333;
-        }
-        
-        .profile-actions {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-        }
-        
-        .btn-secondary {
-            background-color: #555;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <a class="name navbar-brand" href="/" title="" rel="home">EnglishEEZ</a>
-        <div class="user-menu">
-            <span th:text="${user.username}"></span>
-            <a th:href="@{/logout}" class="btn btn-secondary">Sign out</a>
-        </div>
-    </header>
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div th:replace="header :: header"></div>
 
     <div class="profile-container">
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <img th:if="${user.image != null}" th:src="${user.image}" alt="Avatar">
-                <span th:unless="${user.image != null}" th:text="${user.username.substring(0,1).toUpperCase()}"></span>
-            </div>
-            <div class="profile-info">
-                <h1 th:text="${user.username}"></h1>
-                <p th:text="${user.email}"></p>
-            </div>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <img
+            th:if="${user.image != null}"
+            th:src="${user.image}"
+            alt="Avatar"
+          />
+          <span
+            th:unless="${user.image != null}"
+            th:text="${user.username.substring(0,1).toUpperCase()}"
+          ></span>
         </div>
-        
-        <div class="profile-section">
-            <h2>Test participated status:</h2>
-            <div th:if="${progressList != null and !progressList.isEmpty()}">
-                <table style="width:100%;border-collapse:collapse;">
-                    <thead>
-                        <tr>
-                            <th style="border-bottom:1px solid #eee;text-align:left;">Test name</th>
-                            <th style="border-bottom:1px solid #eee;text-align:left;">Type</th>
-                            <th style="border-bottom:1px solid #eee;text-align:left;">Score</th>
-                            <th style="border-bottom:1px solid #eee;text-align:left;">Progress</th>
-                            <th style="border-bottom:1px solid #eee;text-align:left;">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="p : ${progressList}">
-                            <td th:text="${p.test.title}"></td>
-                            <td th:text="${p.test.testType}"></td>
-                            <td th:text="${p.score}"></td>
-                            <td>
-                                <span th:text="${p.progressPercentage}"></span>%
-                            </td>
-                            <td th:text="${p.completionStatus != null and p.completionStatus == T(com.pbl5.pbl5.model.UserProgress.CompletionStatus).completed ? 'Completed' : 'In progress'}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${progressList == null or progressList.isEmpty()}">
-                <p>You haven't done any test</p>
-            </div>
+        <div class="profile-info">
+          <h1 th:text="${user.username}"></h1>
+          <p th:text="${user.email}"></p>
         </div>
-        
-        <div class="profile-actions">
-            <a href="/" class="btn">Back to Home</a>
+      </div>
+
+      <div class="profile-section">
+        <h2>Test participated status:</h2>
+        <div th:if="${progressList != null and !progressList.isEmpty()}">
+          <table style="width: 100%; border-collapse: collapse">
+            <thead>
+              <tr>
+                <th style="border-bottom: 1px solid #eee; text-align: left">
+                  Test name
+                </th>
+                <th style="border-bottom: 1px solid #eee; text-align: left">
+                  Type
+                </th>
+                <th style="border-bottom: 1px solid #eee; text-align: left">
+                  Score
+                </th>
+                <th style="border-bottom: 1px solid #eee; text-align: left">
+                  Progress
+                </th>
+                <th style="border-bottom: 1px solid #eee; text-align: left">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="p : ${progressList}">
+                <td th:text="${p.test.title}"></td>
+                <td th:text="${p.test.testType}"></td>
+                <td th:text="${p.score}"></td>
+                <td><span th:text="${p.progressPercentage}"></span>%</td>
+                <td
+                  th:text="${p.completionStatus != null and p.completionStatus == T(com.pbl5.pbl5.model.UserProgress.CompletionStatus).completed ? 'Completed' : 'In progress'}"
+                ></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <div th:if="${progressList == null or progressList.isEmpty()}">
+          <p>You haven't done any test</p>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <a href="/" class="btn">Back to Home</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

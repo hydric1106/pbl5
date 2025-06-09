@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - EnglishEEZ</title>
+    <title>Login - EnglishEEZ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +37,9 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: black;
+            /* font-weight: bold; */
+            font-size: 18px;
         }
         
         input[type="text"],
@@ -47,7 +49,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .btn {
@@ -82,7 +84,7 @@
         }
         
         .register-link {
-            text-align: center;
+            text-align: right;
             margin-top: 20px;
         }
         
@@ -94,36 +96,46 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+
+        .back-to-home-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-home-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Đăng nhập</h1>
+        <h1>Login</h1>
         
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-        <div th:if="${param.logout}" class="alert alert-success">Bạn đã đăng xuất thành công.</div>
+        <div th:if="${param.logout}" class="alert alert-success">You have signed out!</div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         
         <form th:action="@{/login}" method="post">
             <div class="form-group">
-                <label for="username">Tên đăng nhập:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username...">
             </div>
             
             <div class="form-group">
-                <label for="password">Mật khẩu:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password...">
             </div>
             
-            <button type="submit" class="btn">Đăng nhập</button>
+            <button type="submit" class="btn">Login</button>
         </form>
         
         <div class="register-link">
-            <p>Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a></p>
+            <p>Dont have an account? <a th:href="@{/register}">Sign up now</a></p>
         </div>
         
-        <div class="register-link">
-            <a th:href="@{/}">Quay lại trang chủ</a>
+        <div class="back-to-home-link">
+            <a th:href="@{/}">Back to Home</a>
         </div>
     </div>
 </body>
