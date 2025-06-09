@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://i.imgur.com/ggByS7O.png" />
+    <title>EnglishEEZ</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="header">
+      <a class="name navbar-brand" href="/" title="" rel="home">EnglishEEZ</a>
+
+      <div class="user-menu">
+        <div th:if="${session.currentUser == null}">
+          <a th:href="@{/login}" class="btn">Sign in</a>
+          <a th:href="@{/register}" class="btn">Sign up</a>
+        </div>
+
+        <div
+          th:if="${session.currentUser != null}"
+          class="user-dropdown"
+          id="userDropdown"
+        >
+          <div class="user-info">
+            <span class="user-greeting"
+              >Hello, <span th:text="${session.currentUser.username}"></span
+            ></span>
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span class="dropdown-arrow">&#9662;</span>
+          </div>
+          <div class="user-dropdown-menu">
+            <a th:href="@{/profile}" class="user-dropdown-item">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a th:href="@{/settings}" class="user-dropdown-item">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a th:href="@{/logout}" class="user-dropdown-item">
+              <i class="fas fa-sign-out-alt"></i> Sign out
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav
+      role="navigation"
+      aria-labelledby="block-system-menu-block-main-menu"
+      id="block-system-menu-block-main"
+    >
+      <h2 class="visually-hidden" id="block-system-menu-block-main-menu"></h2>
+
+      <ul class="menu menu--main nav navbar-nav">
+        <li class="first">
+          <a
+            href="/"
+            data-drupal-link-system-path="<front>"
+            class="is-active"
+            aria-current="page"
+            >Home</a
+          >
+        </li>
+        <li class="expanded dropdown">
+          <a
+            href="/skills"
+            class="dropdown-toggle"
+            data-drupal-link-system-path="taxonomy/term/2740"
+            >Skills <span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu" style="display: none">
+            <li class="first">
+              <a
+                href="/listening-test"
+                data-drupal-link-system-path="taxonomy/term/2345"
+                >Listening</a
+              >
+            </li>
+            <li>
+              <a
+                href="/reading-test-choose-level"
+                data-drupal-link-system-path="taxonomy/term/2741"
+                >Reading</a
+              >
+            </li>
+            <li class="last">
+              <a
+                href="/writing-test-choose-level"
+                data-drupal-link-system-path="taxonomy/term/2386"
+                >Writing</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="expanded dropdown">
+          <a
+            href="/grammar"
+            class="dropdown-toggle"
+            data-drupal-link-system-path="taxonomy/term/2383"
+            >Grammar <span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu" style="display: none">
+            <li class="first">
+              <a
+                href="/grammar-list"
+                data-drupal-link-system-path="taxonomy/term/2769"
+                >Learn grammar lessons</a
+              >
+            </li>
+            <li class="last">
+              <a
+                href="/grammar/english-grammar-reference"
+                data-drupal-link-system-path="taxonomy/term/2942"
+                >Grammar tests</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="expanded dropdown">
+          <a
+            href="/vocabulary"
+            class="dropdown-toggle"
+            data-drupal-link-system-path="taxonomy/term/2766"
+            >Vocabulary <span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu" style="display: none">
+            <li class="first">
+              <a
+                href="/vocab-list"
+                data-drupal-link-system-path="taxonomy/term/2767"
+                >Learn vocabulary by topics</a
+              >
+            </li>
+            <li>
+              <a
+                href="/flashcard-choose"
+                data-drupal-link-system-path="taxonomy/term/2768"
+                >Learn with flashcards</a
+              >
+            </li>
+            <li class="last">
+              <a
+                href="/vocab-test"
+                data-drupal-link-system-path="taxonomy/term/2395"
+                >Vocabulary tests</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="last">
+        <a href="https://f84c-42-1-105-34.ngrok-free.app" data-drupal-link-system-path="meeting">Meeting</a>
+    </li>
+      </ul>
+    </nav>
+    <h1>Welcome to EnglishEEZ !</h1>
+    <div class="introduction">
+      EnglishEEZ is a website that helps you learn English more easily and
+      enjoyably through quizzes, flashcards, exercises for each part, and mock
+      tests. <br />
+      Lets start your journey to master English with EnglishEEZ now!
+    </div>
+
+    <div class="homepage-courses-wrapper">
+      <section
+        id="block-homepageskills"
+        class="block block-fixed-block-content block-fixed-block-contenthomepage-skills clearfix"
+      >
+        <div class="wrapper-image">
+          <div
+            class="field field--name-field-image field--type-image field--label-hidden field--item"
+          >
+            <img
+              loading="eager"
+              sizes="(max-width:600px) 100px, 100vw."
+              width="340"
+              height="225"
+              src="https://www.digitalscrapbook.com/sites/default/files/styles/456_scale/public/s3fs-user-content/graphic-image/user-66801/node-220708/this-beautiful-life-listening-word-art-graphic-label-element-embellishment-sticker-navy-blue-white.png"
+              alt="Listening"
+              class="img-responsive"
+            />
+          </div>
+        </div>
+        <div class="wrapper-content">
+          <div
+            class="field field--name-field-title field--type-string field--label-hidden field--item"
+          >
+            Listening
+          </div>
+
+          <div
+            class="field field--name-field-content field--type-text-long field--label-hidden field--item"
+          >
+            <p>Improve your English listening skills.</p>
+            <ul>
+              <li>
+                Various audio clips and exercises to help you improve listening
+                comprehension.
+              </li>
+              <li>
+                Interactive listening activities to practice different accents
+                and speech speeds.
+              </li>
+              <li>
+                Use the listening practice materials to familiarize with various
+                listening scenarios.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="field field--name-field-content-link field--type-link field--label-hidden field--item"
+          >
+            <a href="/listening-test">Start Tests</a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="block-homepagegrammar"
+        class="block block-fixed-block-content block-fixed-block-contenthomepage-grammar clearfix"
+      >
+        <div class="wrapper-image">
+          <div
+            class="field field--name-field-image field--type-image field--label-hidden field--item"
+          >
+            <img
+              loading="eager"
+              sizes="(max-width:600px) 100px, 100vw."
+              width="340"
+              height="225"
+              src="https://thumbs.dreamstime.com/b/reading-concept-word-gouache-paint-texture-white-background-130288037.jpg"
+              alt="reading"
+              class="img-responsive"
+            />
+          </div>
+        </div>
+        <div class="wrapper-content">
+          <div
+            class="field field--name-field-title field--type-string field--label-hidden field--item"
+          >
+            Reading
+          </div>
+
+          <div
+            class="field field--name-field-content field--type-text-long field--label-hidden field--item"
+          >
+            <p>Enhance your English reading skills.</p>
+
+            <ul>
+              <li>
+                Engaging and diverse reading passages to help you develop
+                comprehension skills.
+              </li>
+              <li>
+                Interactive exercises to test and improve your understanding of
+                different texts.
+              </li>
+              <li>
+                Use the reading materials for further practice and to expand
+                your vocabulary.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="field field--name-field-content-link field--type-link field--label-hidden field--item"
+          >
+            <a href="/grammar">Start Tests</a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="block-homepagevocabulary"
+        class="block block-fixed-block-content block-fixed-block-contenthomepage-vocabulary clearfix"
+      >
+        <div class="wrapper-image">
+          <div
+            class="field field--name-field-image field--type-image field--label-hidden field--item"
+          >
+            <img
+              loading="eager"
+              sizes="(max-width:600px) 100px, 100vw."
+              width="340"
+              height="225"
+              src="https://content.twinkl.co.uk/website/uploaded/vocab-1677272426.jpeg"
+              alt="square"
+              class="img-responsive"
+            />
+          </div>
+        </div>
+        <div class="wrapper-content">
+          <div
+            class="field field--name-field-title field--type-string field--label-hidden field--item"
+          >
+            Vocabulary
+          </div>
+
+          <div
+            class="field field--name-field-content field--type-text-long field--label-hidden field--item"
+          >
+            <p>Learn words and improve your language.</p>
+
+            <ul>
+              <li>
+                Online exercises to help you learn the meaning, pronunciation
+                and spelling of new words.
+              </li>
+              <li>
+                Learn new words connected to a wide range of different topics.
+              </li>
+              <li>
+                Play our word games and have fun as you improve your vocabulary.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="field field--name-field-content-link field--type-link field--label-hidden field--item"
+          >
+            <a href="vocabTopic.html">Start Tests</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+<!-- Thêm JavaScript xử lý dropdown menu ngay trước thẻ đóng body -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userDropdown) {
+      userDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+      });
+      
+      // Đóng dropdown khi click bên ngoài
+      document.addEventListener('click', function() {
+        if (userDropdown.classList.contains('active')) {
+          userDropdown.classList.remove('active');
+        }
+      });
+    }
+  });
+    </script>
+  </body>
+</html>

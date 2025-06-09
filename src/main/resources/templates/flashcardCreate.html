@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Card Set</title>
+  <link rel="stylesheet" th:href="@{/css/flashcardCreate.css}" />
+</head>
+<body>
+<a class="back-btn" href="/flashcard-choose">←</a>
+<div class="container" id="cardSetContainer">
+  <h2>Create Card Set</h2>
+  <input type="text" id="cardSetName" placeholder="Enter card set name" />
+  <button onclick="createCardSet()">Create</button>
+  <div id="cat-msg"></div>
+</div>
+<div class="container" id="cardCreationSection" hidden>
+  <h2>Add Flashcard</h2>
+  <input type="text" id="word" placeholder="Enter word" />
+  <input type="text" id="definition" placeholder="Enter definition" />
+  <input type="text" id="type" placeholder="Enter type" /> <!-- Thêm dòng này -->
+  <button onclick="addFlashcard()">Add</button>
+  <div id="msg"></div>
+</div>
+<script>
+  let flccategoryId = null;
+
+  function createCardSet() {
+    const name = document.getElementById("cardSetName").value.trim();
+    const catMsg = document.getElementById("cat-msg");
+    catMsg.textContent = "";
+    if (!name) return;
+    fetch("/flashcard-category-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ flccategory_name: name })
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        flccategoryId = result.flccategory_id;
+        document.getElementById("cardSetContainer").hidden = true;
+        document.getElementById("cardCreationSection").hidden = false;
+      } else {
+        catMsg.textContent = result.message || "Failed to create category.";
+      }
+    });
+  }
+
+  function addFlashcard() {
+    const word = document.getElementById("word").value.trim();
+    const definition = document.getElementById("definition").value.trim();
+    const type = document.getElementById("type").value.trim(); // Lấy giá trị type
+    const msg = document.getElementById("msg");
+    msg.textContent = "";
+    if (!word || !definition || !flccategoryId) return;
+    fetch("/flashcard-add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ word, definition, type, flccategory_id: flccategoryId }) // Thêm type vào đây
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        msg.textContent = "Flashcard added!";
+        document.getElementById("word").value = "";
+        document.getElementById("definition").value = "";
+        document.getElementById("type").value = ""; // Reset input type
+      } else {
+        msg.textContent = result.message || "Failed to add flashcard.";
+      }
+    });
+  }
+</script>
+</body>
+</html>

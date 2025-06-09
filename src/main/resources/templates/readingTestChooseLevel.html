@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Choose Reading Test Level</title>
+    <link rel="stylesheet" th:href="@{/css/readingTestChooseLevel.css}" />
+</head>
+<body>
+    <div class="choose-title">Choose your level to practise your reading</div>
+    <div class="level-container">
+        <div th:each="level : ${levels}"
+             class="level-box"
+             th:text="${level.levelName}"
+             th:onclick="'window.location.href=\'/reading-test?levelId=' + ${level.id} + '\';'">
+        </div>
+    </div>
+</body>
+</html>

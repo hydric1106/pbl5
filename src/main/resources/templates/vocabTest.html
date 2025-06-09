@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabulary Test</title>
+    <link rel="stylesheet" th:href="@{/css/vocabTest.css}" />
+  </head>
+  <body>
+    <div th:if="${test == null}" class="error-container">
+      <h2>Error</h2>
+      <p>Test not found</p>
+      <a href="/" class="back-link">Back to Home</a>
+    </div>
+
+    <div th:if="${test != null}" class="container">
+      <a class="back-btn" onclick="goBack()">←</a>
+      <h2 id="topic-title" th:text="${test.title}">Vocabulary Test</h2>
+      <p id="question" class="question-box"></p>
+      <div id="image-box" class="image-box"></div>
+      <ul class="options" id="options-list"></ul>
+      <div class="input-box" id="answer-box"></div>
+      <button onclick="checkAnswer()" id="submit-btn">Submit</button>
+      <div class="navigation">
+        <button onclick="prevQuestion()" id="prev-btn">Previous</button>
+        <button onclick="nextQuestion()" id="next-btn">Next</button>
+      </div>
+    </div>
+
+    <form id="resultForm" th:action="@{/vocab-test/submit}" method="post" style="display:none;">
+      <input type="hidden" name="testId" th:value="${test.id}" />
+      <input type="hidden" name="answers" id="answersInput" />
+    </form>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      // Initialize test data
+      const test = /*[[${test}]]*/ null;
+      console.log("Test loaded:", test);
+      let questions = [];
+      let currentQuestionIndex = 0;
+      let correctCount = 0;
+      let incorrectCount = 0;
+      let answeredQuestions = {};
+
+      // Initialize when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          if (test && test.questions) {
+            questions = test.questions;
+            console.log("Questions loaded:", questions.length);
+            loadQuestion();
+          }
+        } catch (error) {
+          console.error("Error initializing:", error);
+        }
+      });
+      /*]]>*/
+
+      function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+          completeTest();
+          return;
+        }
+
+        const question = questions[currentQuestionIndex];
+        console.log("Loading question:", currentQuestionIndex + 1);
+
+        document.getElementById("question").innerHTML = `Question ${
+          currentQuestionIndex + 1
+        }: ${question.questionText}`;
+
+        // Load image if exists
+        const imageBox = document.getElementById("image-box");
+        if (question.image) {
+          if (question.image.startsWith("http")) {
+            imageBox.innerHTML = `<img src="${question.image}" alt="Question Image">`;
+          } else {
+            imageBox.innerHTML = `<img src="/images/${test.title}/${question.image}" alt="Question Image">`;
+          }
+        } else {
+          imageBox.innerHTML = "";
+        }
+
+        // Load options
+        const optionsList = document.getElementById("options-list");
+        optionsList.innerHTML = "";
+
+        if (question.options && question.options.length > 0) {
+          question.options.forEach((option) => {
+            const li = document.createElement("li");
+            li.innerHTML = `${option.optionLabel}: ${option.optionText}`;
+            li.onclick = () => selectAnswer(li, option.optionLabel);
+            optionsList.appendChild(li);
+          });
+        }
+
+        correctAnswer = question.correctOptionLabel;
+        updateNavigationButtons();
+      }
+
+      function selectAnswer(element, selectedAnswer) {
+        // Nếu đã trả lời rồi thì không cho chọn nữa
+        if (answeredQuestions[currentQuestionIndex] !== undefined) return;
+
+        const optionsList = document.getElementById("options-list");
+        const optionItems = optionsList.querySelectorAll("li");
+
+        if (selectedAnswer === correctAnswer) {
+          element.classList.add("correct");
+          answeredQuestions[currentQuestionIndex] = true; // Đánh dấu đúng
+        } else {
+          element.classList.add("incorrect");
+          // Tô xanh đáp án đúng
+          optionItems.forEach(li => {
+            if (li.innerText.startsWith(correctAnswer + ":")) {
+              li.classList.add("correct");
+            }
+          });
+          answeredQuestions[currentQuestionIndex] = false; // Đánh dấu sai
+        }
+
+        // Sau khi chọn, disable tất cả các đáp án
+        optionItems.forEach(li => {
+          li.style.pointerEvents = "none";
+        });
+
+        // Gửi dữ liệu về server
+        const question = questions[currentQuestionIndex];
+        const isCorrect = (selectedAnswer === correctAnswer);
+        fetch('/vocab-test/answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            questionId: question.id,
+            selectedOptionLabel: selectedAnswer,
+            correct: isCorrect
+          })
+        }).then(res => res.text()).then(console.log);
+      }
+
+      function enforceLatin(event) {
+        let inputs = document.querySelectorAll("#answer-box input");
+        let index = Array.from(inputs).indexOf(event.target);
+
+        if (event.key === "Backspace") {
+          if (event.target.value === "" && index > 0) {
+            inputs[index - 1].value = "";
+            inputs[index - 1].focus();
+          } else {
+            event.target.value = "";
+          }
+          event.preventDefault();
+        } else {
+          event.target.value = event.target.value
+            .replace(/[^a-zA-Z]/g, "")
+            .toUpperCase();
+          let next = event.target.nextElementSibling;
+          if (next && event.target.value) next.focus();
+        }
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.target.matches("#answer-box input")) {
+          enforceLatin(event);
+        }
+      });
+
+      function checkAnswer() {
+        let inputs = document.querySelectorAll("#answer-box input");
+        let userAnswer = Array.from(inputs)
+          .map((input) => input.value.toUpperCase())
+          .join("");
+
+        if (userAnswer === correctAnswer) {
+          alert("Correct!");
+          answeredQuestions[currentQuestionIndex] = true; // Đánh dấu đúng
+        } else {
+          alert("Incorrect!");
+          answeredQuestions[currentQuestionIndex] = false; // Đánh dấu sai
+          inputs.forEach((input) => (input.value = ""));
+          if (inputs.length > 0) {
+            inputs[0].focus();
+          }
+        }
+      }
+
+      function updateNavigationButtons() {
+        let prevBtn = document.getElementById("prev-btn");
+        let nextBtn = document.getElementById("next-btn");
+
+        prevBtn.disabled = currentQuestionIndex === 0;
+
+        if (currentQuestionIndex === questions.length - 1) {
+          nextBtn.innerText = "Complete";
+          nextBtn.onclick = completeTest; // Gán hàm hoàn thành bài test
+        } else {
+          nextBtn.innerText = "Next";
+          nextBtn.onclick = nextQuestion;
+        }
+      }
+
+      function completeTest() {
+        correctCount = Object.values(answeredQuestions).filter(
+          (value) => value
+        ).length;
+        incorrectCount = questions.length - correctCount;
+
+        // Chuẩn bị dữ liệu gửi về server
+        const results = questions.map((q, idx) => ({
+          questionId: q.id,
+          selectedOptionLabel: answeredQuestions[idx] !== undefined
+            ? (answeredQuestions[idx] ? q.correctOptionLabel : "WRONG")
+            : null,
+          correct: answeredQuestions[idx] === true 
+        }));
+
+        document.getElementById("answersInput").value = JSON.stringify(results);
+        document.getElementById("resultForm").submit();
+      }
+
+      function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          loadQuestion();
+        }
+      }
+
+      function nextQuestion() {
+        if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex++;
+          loadQuestion();
+        }
+      }
+
+      function goBack() {
+        window.location.href = "/";
+      }
+    </script>
+  </body>
+</html>

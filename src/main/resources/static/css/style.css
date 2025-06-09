@@ -1,0 +1,475 @@
+/* ========== General Styles ========== */
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font-size: 50px;
+  text-align: right;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 50px;
+  text-align: center;
+  padding: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #0056b3;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #ff6600;
+}
+
+/* ========== Header Styles ========== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #004f9e;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+/* Logo */
+.navbar-brand {
+  font-size: 50px;
+  font-family: "Big Shoulders Inline", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 3px;
+  transition: 0.3s;
+}
+
+.login-btn {
+  background-color: #ffffff;
+  color: #004f9e;
+  border: 2px solid #004f9e;
+}
+
+.register-btn {
+  background-color: #ff6600;
+  color: #ffffff;
+  border: 2px solid #ff6600;
+}
+
+.login-btn:hover {
+  background-color: #004f9e;
+  color: #ffffff;
+}
+
+.register-btn:hover {
+  background-color: #e65c00;
+  border-color: #e65c00;
+}
+
+/* ========== Navbar Styles ========== */
+nav {
+  background-color: #004f9e;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.menu li {
+  position: relative;
+  padding: 15px 20px;
+}
+
+.menu li a {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.introduction {
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  list-style: none; /* Xóa dấu chấm */
+  display: none;
+  max-height: none !important; /* Đảm bảo không giới hạn chiều cao */
+  overflow: visible !important; /* Cho phép hiển thị đầy đủ nội dung */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  min-width: 220px;
+  border-radius: 4px;
+  z-index: 1000; /* Đảm bảo hiển thị trên các phần khác */
+}
+
+.dropdown-menu li {
+  padding: 10px 15px;
+}
+
+.dropdown-menu li a {
+  color: #333;
+  display: block;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #ff6600;
+  color: white;
+  border-radius: 3px;
+}
+
+/* Hiển thị dropdown menu khi hover */
+.dropdown:hover .dropdown-menu {
+  display: block !important;
+}
+
+/* ========== Homepage Sections ========== */
+.homepage-courses-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.block {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.block:hover {
+  transform: translateY(-5px);
+}
+
+.wrapper-image {
+  text-align: center;
+  background-color: #eef7ff;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  height: 250px; /* Đặt chiều cao cố định */
+}
+
+.wrapper-image img {
+  width: 100%;
+  height: 225px;
+  object-fit: cover; /* Giúp hình ảnh căn chỉnh đồng đều */
+  border-radius: 10px;
+}
+
+.wrapper-content {
+  min-height: 350px; /* Điều chỉnh giá trị nếu cần */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+}
+
+.wrapper-content div.field--name-field-title {
+  font-size: 24px;
+  min-height: 50px;
+  font-weight: bold;
+  color: #004f9e;
+  text-align: center;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.wrapper-content p {
+  font-size: 16px;
+  font-weight: normal;
+  word-spacing: normal;
+  letter-spacing: normal;
+  width: 100%; /* Hoặc max-width: 350px; để tránh bị co lại */
+  line-height: 1.5; /* Tăng line-height để dễ đọc */
+  color: #555;
+  text-align: center;
+  padding: 10px 10px; /* Giảm padding để không bị dư thừa */
+  margin: 0; /* Xóa margin-top âm */
+}
+
+.wrapper-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.wrapper-content ul li {
+  font-size: 14px;
+  color: #666;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  position: relative;
+  margin-bottom: 8px;
+  text-align: justify;
+}
+
+.wrapper-content ul li::before {
+  content: "\2713";
+  color: #004f9e;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* ========== Button Styling ========== */
+.wrapper-content .field--name-field-content-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.wrapper-content .field--name-field-content-link a {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #004f9e;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.wrapper-content .field--name-field-content-link a:hover {
+  background-color: #003366;
+}
+
+/* Thay đổi phần CSS cho user-menu */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+      
+.user-menu span {
+    font-weight: bold;
+    color: white;
+}
+      
+.user-menu .btn {
+    background-color: white;
+    color: #004f9e;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid white;
+    transition: all 0.3s ease;
+}
+      
+.user-menu .btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+      
+.user-menu .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.user-menu .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+/* Thêm vào cuối file - CSS cho dropdown menu người dùng */
+/* Phần CSS cho user menu - áp dụng cho cả trước và sau đăng nhập */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+      
+.user-menu span {
+    font-weight: bold;
+    color: white;
+}
+      
+/* Nút đăng nhập/đăng ký (trước khi đăng nhập) */
+.user-menu .btn {
+    background-color: white;
+    color: #004f9e;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid white;
+    transition: all 0.3s ease;
+}
+      
+.user-menu .btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+      
+.user-menu .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.user-menu .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* CSS cho dropdown menu người dùng (sau khi đăng nhập) */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.user-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #004f9e;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.user-avatar i {
+    font-size: 18px;
+}
+
+.user-greeting {
+    font-weight: bold;
+    color: white;
+}
+
+.dropdown-arrow {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: white;
+    margin-left: 4px;
+}
+
+/* Cải thiện hiển thị của dropdown menu */
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    padding: 8px 0;
+    z-index: 1000;
+    display: none;
+    border: 1px solid #eaeaea;
+}
+
+/* Hiển thị dropdown khi active */
+.user-dropdown.active .user-dropdown-menu {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Cải thiện các item trong dropdown */
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.user-dropdown-item:hover {
+    background-color: #f0f7ff;
+    color: #004f9e;
+    border-left-color: #004f9e;
+}
+
+.user-dropdown-item i {
+    margin-right: 10px;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Thêm đường ngăn cách giữa các mục */
+.user-dropdown-item + .user-dropdown-item {
+    border-top: 1px solid #f5f5f5;
+}

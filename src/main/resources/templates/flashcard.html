@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Flashcards</title>
+    <link rel="stylesheet" th:href="@{/css/flashcard.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <a th:href="${flashcards != null} ? '/flashcard' : '/flashcard-choose'" class="back-btn">←</a>
+    <h1>Flashcards</h1>
+
+    <div th:if="${flashcards == null}">
+      <div class="category-row">
+        <div class="category-col">
+          <h2>Select an available flashcard set:</h2>
+          <div class="category-list">
+            <div th:each="cat : ${categories}">
+              <a th:href="@{/flashcard(categoryId=${cat.id})}">
+                <div class="category-box" th:text="${cat.categoryName}"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="category-col">
+          <h2>Select your customized flashcard set:</h2>
+          <div class="category-list">
+            <div th:each="flc : ${userFlcCategories}">
+              <a th:href="@{/flashcard(flccategoryId=${flc.flccategoryId})}">
+                <div class="category-box" th:text="${flc.flccategoryName}"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:if="${flashcards != null}">
+      <h2 th:text="'Topic: ' + ${selectedCategoryName}"></h2>
+
+      <div id="flashcard-container" class="flashcard" onclick="flipCard()">
+        <div class="flashcard-inner" id="flashcard-inner">
+          <div class="flashcard-front" id="flashcard-front">
+            <!-- Nội dung mặt trước sẽ được JS cập nhật -->
+          </div>
+          <div class="flashcard-back" id="flashcard-back">
+            <!-- Nội dung mặt sau sẽ được JS cập nhật -->
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button onclick="nextCard()">Next →</button>
+      </div>
+    </div>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      const flashcards = [[${flashcards}]];
+      /*]]>*/
+
+      let currentIndex = 0;
+      const container = document.getElementById("flashcard-container");
+      const inner = document.getElementById("flashcard-inner");
+      const front = document.getElementById("flashcard-front");
+      const back = document.getElementById("flashcard-back");
+
+      function renderCard(index) {
+          const card = flashcards[index];
+          front.innerHTML = `
+              <div><b>${card.word}</b></div>
+              <div>(${card.type})</div>
+              <div>${card.phonetic}</div>
+          `;
+          back.innerHTML = `
+              <h2>${card.definition}</h2>
+              <div class="example">Ex: ${card.example}</div>
+          `;
+          inner.classList.remove("flipped");
+      }
+
+      function flipCard() {
+          container.classList.toggle("flipped");
+      }
+
+      function nextCard() {
+          currentIndex = (currentIndex + 1) % flashcards.length;
+          renderCard(currentIndex);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+          renderCard(currentIndex);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grammar Lessons</title>
+    <link rel="stylesheet" th:href="@{/css/grammarList.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+      <span class="navbar-brand">English EEZ</span>
+    </header>
+
+    <nav class="sidebar">
+      <h2>Lessons</h2>
+      <ul id="lesson-list">
+        <li
+          th:each="lesson, stat : ${lessons}"
+          th:data-lesson-id="${lesson.id}"
+          th:text="${lesson.lessonName}"
+          th:class="${stat.first ? 'topic-item selected' : 'topic-item'}"
+          onclick="selectLesson(this)"
+        ></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <div class="vocab-container">
+        <!-- <h1
+          id="lesson-title"
+          th:text="${lessons.isEmpty() ? 'No Lessons Available' : lessons[0].lessonName}"
+        ></h1> -->
+        <div class="vocab-grid">
+          <div th:each="lesson, stat : ${lessons}" class="vocab-card lesson-card" th:if="${stat.first}">
+            <div class="word-header">
+              <h3 class="word" th:text="${lesson.lessonName}"></h3>
+            </div>
+            <div class="meaning" th:text="${lesson.description}"></div>
+            <div class="rules-box">
+              <span th:text="${lesson.rules}"></span>
+            </div>
+            <div class="example">
+              <span style="font-weight:bold;">Example:</span>
+              <span th:text="${lesson.examples}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <form id="lessonForm" th:action="@{/grammar-list}" method="get">
+      <input type="hidden" name="lessonId" id="selectedLessonId" />
+    </form>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      function selectLesson(element) {
+        const lessonId = element.getAttribute("data-lesson-id");
+
+        // Update visual selection
+        document.querySelectorAll(".topic-item").forEach((item) => {
+          item.classList.remove("selected");
+        });
+        element.classList.add("selected");
+
+        // Update title
+        document.getElementById("lesson-title").textContent = element.textContent;
+
+        // Update form and submit
+        document.getElementById("selectedLessonId").value = lessonId;
+        document.getElementById("lessonForm").submit();
+      }
+      /*]]>*/
+    </script>
+  </body>
+</html>

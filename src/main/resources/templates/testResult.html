@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Result</title>
+</head>
+<body>
+  <h2>Congratulations! You have completed the test.</h2>
+  <p>Total Questions: <span th:text="${totalQuestions}"></span></p>
+  <p>Correct Answers: <strong th:text="${correctCount}"></strong></p>
+  <p>Incorrect Answers: <strong th:text="${incorrectCount}"></strong></p>
+  <p>Your Score: <strong th:text="${score}"></strong></p>
+  <a href="/">Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabulary Topics - EnglishEEZ</title>
+    <link rel="stylesheet" th:href="@{/css/vocabList.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <button class="back-btn" onclick="goBack()">←</button>
+      <a class="name navbar-brand" href="/" title="" rel="home">EnglishEEZ</a>
+    </header>
+
+    <nav class="sidebar">
+      <h2>Topics</h2>
+      <ul id="topic-list">
+        <li
+          th:each="category : ${categories}"
+          th:data-category-id="${category.id}"
+          th:text="${category.categoryName}"
+          th:class="${categoryStat.first ? 'topic-item selected' : 'topic-item'}"
+          onclick="selectCategory(this)"
+        ></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <div class="vocab-container">
+        <h1
+          id="topic-title"
+          th:text="${categories.isEmpty() ? 'No Topics Available' : categories[0].categoryName}"
+        ></h1>
+
+        <div class="vocab-grid">
+          <div th:each="vocab : ${vocabularies}" class="vocab-card">
+            <div class="vocab-content">
+              <div class="word-header">
+                <h3 class="word">
+                  <span th:text="${vocab.word}"></span>
+                  <span th:text="'(' + ${vocab.type} + ')'"></span>
+                </h3>
+                <button
+                  class="audio-btn"
+                  th:if="${vocab.audio != null}"
+                  th:data-audio="${vocab.audio}"
+                  onclick="playAudio(this.getAttribute('data-audio'))"
+                >
+                  <i class="fas fa-volume-up"></i>
+                </button>
+              </div>
+              <p class="phonetic" th:text="${vocab.phonetic}"></p>
+              <p class="meaning" th:text="${vocab.definition}"></p>
+              <p
+                class="example"
+                th:if="${vocab.example != null}"
+                th:text="${vocab.example}"
+              ></p>
+            </div>
+          </div>
+        </div>
+        <div class="test-button-container">
+          <a
+            th:if="${not #lists.isEmpty(vocabularies)}"
+            th:href="@{/vocab-test(categoryId=${param.categoryId != null ? param.categoryId : categories[0].id})}"
+            class="start-test-btn"
+          >
+            Start Test
+          </a>
+          <button
+            th:unless="${not #lists.isEmpty(vocabularies)}"
+            class="start-test-btn disabled"
+            disabled
+          >
+            Select a category first
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <form id="categoryForm" th:action="@{/vocab-list}" method="get">
+      <input type="hidden" name="categoryId" id="selectedCategoryId" />
+    </form>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      function selectCategory(element) {
+        const categoryId = element.getAttribute("data-category-id");
+
+        // Update visual selection
+        document.querySelectorAll(".topic-item").forEach((item) => {
+          item.classList.remove("selected");
+        });
+        element.classList.add("selected");
+
+        // Update title
+        document.getElementById("topic-title").textContent =
+          element.textContent;
+
+        // Update form and submit
+        document.getElementById("selectedCategoryId").value = categoryId;
+        document.getElementById("categoryForm").submit();
+      }
+
+      function goBack() {
+        window.location.href = "/";
+      }
+
+      function playAudio(audioUrl) {
+        const audio = new Audio(audioUrl);
+        audio.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      }
+      /*]]>*/
+    </script>
+  </body>
+</html>

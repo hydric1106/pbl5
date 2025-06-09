@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reading Test</title>
+    <link rel="stylesheet" th:href="@{/css/readingTest.css}" />
+</head>
+<body>
+    <header class="header">
+        <button class="back-btn" onclick="goBack()">←</button>
+    </header>
+
+    <nav class="sidebar">
+        <h2>Reading Tests</h2>
+        <ul id="test-list">
+            <li th:each="test : ${tests}"
+                th:attr="data-test-id=${test.id}"
+                th:text="${test.title}"
+                class="test-item"></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <div class="reading-container">
+            <section class="reading-text" id="reading-text"></section>
+            <section class="question">
+                <h2 id="question-title"></h2>
+            </section>
+            <section class="answers">
+                <form id="quiz-form"></form>
+                <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+                <p id="result"></p>
+                <div class="navigation">
+                    <button id="prev-btn" type="button">Previous</button>
+                    <button id="next-btn" type="button">Next</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const tests = [[${tests}]];
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let currentTest = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initializeListeners();
+            if (tests && tests.length > 0) {
+                loadTest(tests[0].id);
+            }
+        });
+
+        function initializeListeners() {
+            document.querySelectorAll("#test-list li").forEach((item) => {
+                item.addEventListener("click", function () {
+                    const testId = parseInt(this.getAttribute("data-test-id"));
+                    loadTest(testId);
+                });
+            });
+            document.getElementById("submit-btn").addEventListener("click", checkAnswer);
+            document.getElementById("prev-btn").addEventListener("click", prevQuestion);
+            document.getElementById("next-btn").addEventListener("click", nextQuestion);
+        }
+
+        function loadTest(testId) {
+            currentTest = tests.find((t) => t.id === testId);
+            if (!currentTest) return;
+            questions = currentTest.questions;
+            currentQuestionIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            document.getElementById("reading-text").textContent = currentTest.readingText || "";
+            document.querySelectorAll("#test-list li").forEach((li) => li.classList.remove("selected"));
+            document.querySelector(`li[data-test-id="${testId}"]`)?.classList.add("selected");
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            const question = questions[index];
+            document.getElementById("question-title").textContent =
+                `Question ${index + 1}: ${question.questionText}`;
+            const quizForm = document.getElementById("quiz-form");
+            quizForm.innerHTML = "";
+            if (question.options && question.options.length > 0) {
+                question.options.forEach((option) => {
+                    const label = document.createElement("label");
+                    label.classList.add("answer-option");
+                    label.innerHTML = `
+                        <input type="radio" name="answer" value="${option.optionLabel}">
+                        ${option.optionText}
+                    `;
+                    quizForm.appendChild(label);
+                });
+            } else {
+                quizForm.innerHTML = `<input type="text" name="answer" />`;
+            }
+            document.getElementById("result").textContent = "";
+            updateNavigationButtons();
+        }
+
+        function checkAnswer() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) {
+                alert("Please select an answer.");
+                return;
+            }
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selected.value === question.correctOptionLabel;
+            const result = document.getElementById("result");
+            if (isCorrect) {
+                result.textContent = "Correct! 🎉";
+                result.style.color = "green";
+                correctCount++;
+            } else {
+                result.textContent = `Incorrect. The correct answer is ${question.correctOptionLabel}`;
+                result.style.color = "red";
+                incorrectCount++;
+            }
+            document.querySelectorAll('input[name="answer"]').forEach((input) => {
+                input.disabled = true;
+            });
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+            prevBtn.disabled = currentQuestionIndex === 0;
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = "Complete";
+                nextBtn.removeEventListener("click", nextQuestion);
+                nextBtn.addEventListener("click", completeTest);
+            } else {
+                nextBtn.textContent = "Next";
+                nextBtn.removeEventListener("click", completeTest);
+                nextBtn.addEventListener("click", nextQuestion);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                document.querySelectorAll('input[name="answer"]').forEach((input) => {
+                    input.disabled = false;
+                    input.checked = false;
+                });
+                document.getElementById("result").textContent = "";
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                document.querySelectorAll('input[name="answer"]').forEach((input) => {
+                    input.disabled = false;
+                    input.checked = false;
+                });
+                document.getElementById("result").textContent = "";
+            }
+        }
+
+        function completeTest() {
+            const resultContainer = document.createElement("div");
+            resultContainer.classList.add("result-container");
+            resultContainer.innerHTML = `
+                <h2>Congratulations!</h2>
+                <p>You have completed the test.</p>
+                <div class="score">
+                    <p>Total Questions: <span>${questions.length}</span></p>
+                    <p>Correct Answers: <span>${correctCount}</span></p>
+                    <p>Incorrect Answers: <span>${incorrectCount}</span></p>
+                </div>
+                <button onclick="window.location.reload()">Try Again</button>
+            `;
+            document.body.innerHTML = "";
+            document.body.appendChild(resultContainer);
+        }
+
+        function goBack() {
+            window.location.href = "/";
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>
