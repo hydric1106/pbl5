@@ -1,9 +1,9 @@
 package com.pbl5.pbl5.repository;
 
+import com.pbl5.pbl5.model.Test;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import com.pbl5.pbl5.model.Test;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +17,6 @@ public interface TestRepository extends JpaRepository<Test, Long> {
     List<Test> findByCategoryId(@Param("categoryId") Long categoryId);
     
     boolean existsByTitle(String title);
+    
+    List<Test> findByTestTypeAndLevel_Id(String testType, int levelId);
 }

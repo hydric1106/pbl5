@@ -36,6 +36,9 @@ public class Question {
     @Column(name = "correct_answer_text")
     private String correctAnswerText;
 
+    @Column(name = "suggestions")
+    private String suggestions;
+
     @JsonBackReference("test-questions")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_id")
@@ -113,6 +116,14 @@ public class Question {
 
     public void setCorrectAnswerText(String correctAnswerText) {
         this.correctAnswerText = correctAnswerText;
+    }
+
+    public String getSuggestions() {
+        return suggestions;
+    }
+
+    public void setSuggestions(String suggestions) {
+        this.suggestions = suggestions;
     }
 
     public Test getTest() {

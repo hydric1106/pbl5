@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Writing Test</title>
+    <link rel="stylesheet" th:href="@{/css/writingTest.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+</head>
+<body>
+    <div th:replace="header :: header"></div>
+
+    <nav class="sidebar">
+        <div class="top-list">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <span>Writing Tests</span>
+        </div>
+        <ul id="test-list">
+            <li th:each="test : ${tests}"
+                th:attr="data-test-id=${test.id}"
+                th:text="${test.title}"
+                class="test-item"></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <div class="writing-container">
+            <section class="writing-text" id="writing-text"></section>
+            <section class="question">
+                <h2 id="question-title"></h2>
+            </section>
+            <section class="answers">
+                <form id="quiz-form"></form>
+                <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+                <p id="result"></p>
+                <div class="navigation">
+                    <button id="prev-btn" type="button">Previous</button>
+                    <button id="next-btn" type="button">Next</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const tests = [[${tests}]];
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let currentTest = null;
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initializeListeners();
+            if (tests && tests.length > 0) {
+                loadTest(tests[0].id);
+            }
+        });
+
+        function initializeListeners() {
+            document.querySelectorAll("#test-list li").forEach((item) => {
+                item.addEventListener("click", function () {
+                    const testId = parseInt(this.getAttribute("data-test-id"));
+                    loadTest(testId);
+                });
+            });
+            document.getElementById("submit-btn").addEventListener("click", checkAnswer);
+            document.getElementById("prev-btn").addEventListener("click", prevQuestion);
+            document.getElementById("next-btn").addEventListener("click", nextQuestion);
+        }
+
+        function loadTest(testId) {
+            currentTest = tests.find((t) => t.id === testId);
+            if (!currentTest) return;
+            questions = currentTest.questions;
+            currentQuestionIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            document.getElementById("writing-text").textContent = currentTest.readingText || "";
+            document.querySelectorAll("#test-list li").forEach((li) => li.classList.remove("selected"));
+            document.querySelector(`li[data-test-id="${testId}"]`)?.classList.add("selected");
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            const question = questions[index];
+            document.getElementById("question-title").textContent = `Question ${index + 1}:`;
+
+            // Render fill-in-the-blank
+            let blankIdx = 0;
+            let html = question.questionText.replace(/___/g, () => {
+                return `<input type="text" class="blank-input" data-idx="${blankIdx++}" style="width:90px;margin:0 3px;" autocomplete="off"/>`;
+            });
+
+            // Gộp options và suggestions thành text đơn giản, nằm ngay dưới question_text, nhưng ngoài quiz-form
+            let optionText = (question.options && question.options.length > 0)
+                ? question.options.map(opt => opt.optionText).join(', ')
+                : '';
+            let suggestionText = (question.suggestions)
+                ? question.suggestions
+                : '';
+            let allWords = [optionText, suggestionText].filter(Boolean).join(', ');
+
+            // Render đoạn văn
+            document.getElementById("quiz-form").innerHTML = `
+                <div style="margin-bottom:6px;">${html}</div>
+            `;
+
+            // Render words-label ra ngoài quiz-form, ngay sau quiz-form
+            const quizFormElem = document.getElementById("quiz-form");
+            let wordsLabelElem = document.getElementById("words-label");
+            if (!wordsLabelElem) {
+                wordsLabelElem = document.createElement("div");
+                wordsLabelElem.id = "words-label";
+                quizFormElem.parentNode.insertBefore(wordsLabelElem, quizFormElem.nextSibling);
+            }
+            wordsLabelElem.className = "words-label";
+            wordsLabelElem.style.marginTop = "0";
+            wordsLabelElem.innerHTML = allWords ? `Available words: ${allWords}` : "";
+            document.getElementById("result").textContent = "";
+            updateNavigationButtons();
+        }
+
+        // Thêm hàm này để click vào suggestion sẽ điền vào ô đang focus
+        function insertSuggestionSpan(span) {
+            const blanks = document.querySelectorAll('.blank-input');
+            for (let blank of blanks) {
+                if (document.activeElement === blank) {
+                    blank.value = span.textContent;
+                    break;
+                }
+            }
+        }
+
+        // Kiểm tra đáp án
+        function checkAnswer() {
+            const blanks = document.querySelectorAll('.blank-input');
+            const question = questions[currentQuestionIndex];
+            let correct = 0;
+            // Parse correct answers từ correct_answer_text
+            const correctAnswers = question.correctAnswerText ? question.correctAnswerText.split(',').map(a => a.trim()) : [];
+            blanks.forEach((input, i) => {
+                if (input.value.trim().toLowerCase() === (correctAnswers[i] || '').toLowerCase()) {
+                    input.style.background = "#c8e6c9";
+                    correct++;
+                } else {
+                    input.style.background = "#ffcdd2";
+                }
+            });
+            document.getElementById("result").textContent = `Correct: ${correct}/${correctAnswers.length}`;
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+            prevBtn.disabled = currentQuestionIndex === 0;
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = "Complete";
+                nextBtn.removeEventListener("click", nextQuestion);
+                nextBtn.addEventListener("click", completeTest);
+            } else {
+                nextBtn.textContent = "Next";
+                nextBtn.removeEventListener("click", completeTest);
+                nextBtn.addEventListener("click", nextQuestion);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                document.getElementById("result").textContent = "";
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                document.getElementById("result").textContent = "";
+            }
+        }
+
+        function completeTest() {
+            const resultContainer = document.createElement("div");
+            resultContainer.classList.add("result-container");
+            resultContainer.innerHTML = `
+                <h2>Congratulations!</h2>
+                <p>You have completed the writing test.</p>
+                <button onclick="window.location.reload()">Try Again</button>
+            `;
+            document.body.innerHTML = "";
+            document.body.appendChild(resultContainer);
+        }
+
+        function goBack() {
+            window.location.href = "/";
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>

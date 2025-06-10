@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2025 at 07:52 PM
+-- Generation Time: Jun 10, 2025 at 09:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -174,7 +174,10 @@ INSERT INTO `options` (`id`, `question_id`, `option_label`, `option_text`) VALUE
 (43, 11, 'A', 'Subject + has/have + V3 + ...'),
 (44, 11, 'B', 'Subject + V(s/es) + ...'),
 (45, 11, 'C', 'Subject + will + V + ...'),
-(46, 11, 'D', 'Subject + is/are + V-ing + ...');
+(46, 11, 'D', 'Subject + is/are + V-ing + ...'),
+(47, 12, '1', 'Shared'),
+(48, 12, '2', 'minute'),
+(49, 12, '3', 'Available');
 
 -- --------------------------------------------------------
 
@@ -191,20 +194,22 @@ CREATE TABLE `questions` (
   `audio` varchar(255) DEFAULT NULL,
   `question_order` int(11) NOT NULL,
   `correct_option_label` varchar(255) DEFAULT NULL,
-  `correct_answer_text` varchar(255) DEFAULT NULL
+  `correct_answer_text` varchar(255) DEFAULT NULL,
+  `suggestions` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`id`, `test_id`, `question_text`, `question_type`, `image`, `audio`, `question_order`, `correct_option_label`, `correct_answer_text`) VALUES
-(1, 1, 'Listen to the audio and choose the correct answer', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/5656089_1562638419203.png', 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/94243671.mp3', 1, 'A', 'The woman is talking on the phone.'),
-(2, 1, 'Listen to the audio and choose the correct answer', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/5911589_1562638438001.png', 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/66607451.mp3', 2, 'B', 'The man is hammering something into a building frame.'),
-(3, 3, 'an association; a relationship', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/ToeicVc_ev538.jpg', NULL, 1, 'C', 'link'),
-(4, 3, 'to receive a periodical regularly on order', 'multiple_choice', 'https://fdn.gsmarena.com/imgroot/news/20/07/spotify-duo/-727/gsmarena_002.jpg', NULL, 2, 'B', 'subscribe'),
-(5, 4, 'Sam Holden is the yoga teacher.', 'true_false', NULL, NULL, 1, 'B', 'False'),
-(11, 13, 'Choose the correct rules for the Present Simple Tense', 'multiple_choice', NULL, NULL, 1, 'B', NULL);
+INSERT INTO `questions` (`id`, `test_id`, `question_text`, `question_type`, `image`, `audio`, `question_order`, `correct_option_label`, `correct_answer_text`, `suggestions`) VALUES
+(1, 1, 'Listen to the audio and choose the correct answer', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/5656089_1562638419203.png', 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/94243671.mp3', 1, 'A', 'The woman is talking on the phone.', NULL),
+(2, 1, 'Listen to the audio and choose the correct answer', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/5911589_1562638438001.png', 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/66607451.mp3', 2, 'B', 'The man is hammering something into a building frame.', NULL),
+(3, 3, 'an association; a relationship', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/ToeicVc_ev538.jpg', NULL, 1, 'C', 'link', NULL),
+(4, 3, 'to receive a periodical regularly on order', 'multiple_choice', 'https://fdn.gsmarena.com/imgroot/news/20/07/spotify-duo/-727/gsmarena_002.jpg', NULL, 2, 'B', 'subscribe', NULL),
+(5, 4, 'Sam Holden is the yoga teacher.', 'true_false', NULL, NULL, 1, 'B', 'False', NULL),
+(11, 13, 'Choose the correct rules for the Present Simple Tense', 'multiple_choice', NULL, NULL, 1, 'B', NULL, NULL),
+(12, 14, 'Single ___ room in a two-bed house in Withington, a ten-___ walk from city centre. ___ 1 September.\n', 'writing_fill_blank', NULL, NULL, 1, NULL, 'shared,minute,available', 'excluding, ensuite');
 
 -- --------------------------------------------------------
 
@@ -230,7 +235,8 @@ INSERT INTO `tests` (`test_id`, `test_type`, `test_name`, `reading_text`, `level
 (2, 'Listening', 'Listening Test 2', NULL, NULL, NULL),
 (3, 'Vocabulary', 'Topic Revision Media', NULL, NULL, NULL),
 (4, 'Reading', 'A poster at work', 'Come and join our lunchtime yoga class with experienced yoga teacher Divya Bridge!\n\nWhen? Every Tuesday at 1.30 p.m.\n\nWhere? Meeting Room 7\n\nHow much? £10 for four 30-minute classes.\n\nWhat to bring? Comfortable clothes. Divya will provide the yoga mats.\n\nHow to join? Write to Sam at Sam.Holden@example.com\n\n \n\nWe can only take a maximum of 20 in the room, so book now!', 1, NULL),
-(13, 'Grammar', 'Grammar Test 2', NULL, 2, NULL);
+(13, 'Grammar', 'Grammar Test 2', NULL, 2, NULL),
+(14, 'Writing', 'Writing Test A1 1', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -287,7 +293,7 @@ CREATE TABLE `user_progress` (
   `score` int(11) NOT NULL,
   `completion_status` enum('completed','in_progress') NOT NULL,
   `progress_percentage` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `question_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -296,7 +302,8 @@ CREATE TABLE `user_progress` (
 --
 
 INSERT INTO `user_progress` (`id`, `user_id`, `test_id`, `score`, `completion_status`, `progress_percentage`, `category_id`, `question_id`) VALUES
-(1, 3, 3, 100, 'completed', 100, 1, 4);
+(1, 3, 3, 0, 'completed', 100, 1, 4),
+(3, 3, 13, 100, 'completed', 100, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -320,12 +327,12 @@ CREATE TABLE `user_test_results` (
 --
 
 INSERT INTO `user_test_results` (`id`, `user_id`, `test_id`, `question_id`, `selected_option_label`, `selected_answer_text`, `is_correct`, `score_obtained`) VALUES
-(1, 3, 3, 3, 'C', 'C', 1, 100),
-(2, 3, 3, 4, 'B', 'B', 1, 100),
-(15, 3, 3, 3, 'C', 'C', 1, 50),
-(16, 3, 3, 4, 'B', 'B', 1, 50),
+(1, 3, 3, 3, 'A', 'A', 0, 0),
+(2, 3, 3, 4, 'A', 'A', 0, 0),
 (17, 3, 13, 11, 'B', 'B', 1, 100),
-(18, 3, 13, 11, 'B', 'B', 1, 100);
+(25, 3, 3, 3, 'WRONG', 'WRONG', 0, 0),
+(26, 3, 3, 4, 'WRONG', 'WRONG', 0, 0),
+(27, 3, 13, 11, 'B', 'B', 1, 100);
 
 -- --------------------------------------------------------
 
@@ -494,19 +501,19 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -518,13 +525,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_progress`
 --
 ALTER TABLE `user_progress`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_test_results`
 --
 ALTER TABLE `user_test_results`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `vocabulary`
