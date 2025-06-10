@@ -17,7 +17,7 @@
   <h2>Add Flashcard</h2>
   <input type="text" id="word" placeholder="Enter word" />
   <input type="text" id="definition" placeholder="Enter definition" />
-  <input type="text" id="type" placeholder="Enter type" /> <!-- Thêm dòng này -->
+  <input type="text" id="type" placeholder="Enter type" /> 
   <button onclick="addFlashcard()">Add</button>
   <div id="msg"></div>
 </div>
@@ -49,14 +49,14 @@
   function addFlashcard() {
     const word = document.getElementById("word").value.trim();
     const definition = document.getElementById("definition").value.trim();
-    const type = document.getElementById("type").value.trim(); // Lấy giá trị type
+    const type = document.getElementById("type").value.trim(); 
     const msg = document.getElementById("msg");
     msg.textContent = "";
     if (!word || !definition || !flccategoryId) return;
     fetch("/flashcard-add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ word, definition, type, flccategory_id: flccategoryId }) // Thêm type vào đây
+      body: JSON.stringify({ word, definition, type, flccategory_id: flccategoryId }) 
     })
     .then(res => res.json())
     .then(result => {
@@ -64,7 +64,7 @@
         msg.textContent = "Flashcard added!";
         document.getElementById("word").value = "";
         document.getElementById("definition").value = "";
-        document.getElementById("type").value = ""; // Reset input type
+        document.getElementById("type").value = ""; 
       } else {
         msg.textContent = result.message || "Failed to add flashcard.";
       }

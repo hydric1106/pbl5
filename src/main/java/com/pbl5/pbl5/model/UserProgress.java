@@ -36,7 +36,8 @@ public class UserProgress {
     private Question question;
 
     public enum CompletionStatus {
-        completed, in_progress
+        completed,
+        in_progress
     }
 
     // Getters and Setters

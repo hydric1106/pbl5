@@ -1,0 +1,98 @@
+body,
+.add-test-container,
+.add-test-form,
+.add-question-form,
+.select-test-form {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.add-test-container {
+  max-width: 540px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 32px 28px 24px 28px;
+}
+
+.add-test-form,
+.add-question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.add-test-form label,
+.add-question-form label {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.add-test-form input,
+.add-test-form select,
+.add-question-form input,
+.add-question-form select {
+  padding: 8px 10px;
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.option-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.option-row input[type="text"]:first-child {
+  width: 40px;
+  text-align: center;
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+.btn {
+  margin-top: 18px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: #1257a8;
+}
+
+.select-test-form span {
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.select-test-form select {
+  height: 40px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #bdbdbd;
+  padding: 0 12px;
+  margin-right: 8px;
+  min-width: 200px;
+  box-sizing: border-box;
+}
+
+.select-test-form .btn {
+  height: 40px;
+  padding: 0 22px;
+  margin-top: 0;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

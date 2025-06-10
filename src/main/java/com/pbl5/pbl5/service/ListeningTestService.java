@@ -28,7 +28,6 @@ public class ListeningTestService {
         List<Test> tests = testRepository.findByTestType("Listening");
         System.out.println("Found " + tests.size() + " listening tests");
         
-        // Eagerly load all related data
         for (Test test : tests) {
             List<Question> questions = getQuestionsForTest(test.getId());
             test.setQuestions(questions);

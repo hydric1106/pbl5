@@ -69,11 +69,9 @@ public class FlashcardController {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
-        // Lấy user hiện tại từ session
         User currentUser = (User) session.getAttribute("currentUser");
         List<FlashcardsCategory> userFlcCategories = new ArrayList<>();
         if (currentUser != null) {
-            // Lấy tất cả flccategory_id mà user này đã tạo flashcard
             userFlcCategories = flashcardsCategoryRepository.findAllByUserId(currentUser.getId());
         }
         model.addAttribute("userFlcCategories", userFlcCategories);
@@ -86,10 +84,8 @@ public class FlashcardController {
                 .findFirst()
                 .ifPresent(cat -> model.addAttribute("selectedCategoryName", cat.getCategoryName()));
         } else if (flccategoryId != null) {
-            // Lấy flashcard theo flccategoryId
             List<Flashcard> flashcards = flashcardRepository.findByFlccategoryId(flccategoryId);
             model.addAttribute("flashcards", flashcards);
-            // Lấy tên bộ flashcard
             userFlcCategories.stream()
                 .filter(flc -> flc.getFlccategoryId().equals(flccategoryId))
                 .findFirst()

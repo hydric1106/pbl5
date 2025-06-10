@@ -22,15 +22,11 @@ public class User {
     @Column(name = "image", length = 99, nullable = false)
     private String image = "";
 
-    // Bỏ các trường không có trong DB
-    @Transient
+    @Column(name = "role", length = 20, nullable = false)
     private String role = "USER";
     
     @Transient
     private boolean active = true;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Test> tests;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserProgress> userProgress;
@@ -94,15 +90,7 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    public List<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
-    }
-
+    
     public List<UserProgress> getUserProgress() {
         return userProgress;
     }

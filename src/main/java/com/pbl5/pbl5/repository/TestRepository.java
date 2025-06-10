@@ -15,4 +15,6 @@ public interface TestRepository extends JpaRepository<Test, Long> {
     
     @Query("SELECT t FROM Test t JOIN t.categories c WHERE c.id = :categoryId")
     List<Test> findByCategoryId(@Param("categoryId") Long categoryId);
+    
+    boolean existsByTitle(String title);
 }

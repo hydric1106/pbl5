@@ -22,7 +22,6 @@ public class VocabTestService {
     public Test getTestByCategory(Integer categoryId) {
         Long categoryIdLong = categoryId.longValue();
         
-        // Force eager loading of all relationships
         Test test = testRepository.findByCategoryIdAndType(categoryIdLong, "Vocabulary")
             .orElseThrow(() -> new RuntimeException("No vocabulary test found for category: " + categoryId));
             

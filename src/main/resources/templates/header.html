@@ -188,6 +188,14 @@
           <a th:href="@{/settings}" class="user-dropdown-item">
             <i class="fas fa-cog"></i> Settings
           </a>
+          <th:block th:if="${session.currentUser != null and session.currentUser.role == 'ADMIN'}">
+            <a th:href="@{/view-user-list}" class="user-dropdown-item">
+              <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a th:href="@{/add-test}" class="user-dropdown-item">
+              <i class="fas fa-plus-circle"></i> Add new test
+            </a>
+          </th:block>
           <a th:href="@{/logout}" class="user-dropdown-item">
             <i class="fas fa-sign-out-alt"></i> Sign out
           </a>
@@ -195,4 +203,20 @@
       </div>
     </div>
   </header>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userDropdown = document.getElementById('userDropdown');
+      if (userDropdown) {
+        userDropdown.addEventListener('click', function(e) {
+          e.stopPropagation();
+          this.classList.toggle('active');
+        });
+        document.addEventListener('click', function() {
+          if (userDropdown.classList.contains('active')) {
+            userDropdown.classList.remove('active');
+          }
+        });
+      }
+    });
+  </script>
 </div>

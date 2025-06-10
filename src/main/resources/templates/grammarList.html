@@ -39,10 +39,6 @@
 
     <main class="content">
       <div class="vocab-container">
-        <!-- <h1
-          id="lesson-title"
-          th:text="${lessons.isEmpty() ? 'No Lessons Available' : lessons[0].lessonName}"
-        ></h1> -->
         <div class="vocab-grid">
           <div th:each="lesson, stat : ${lessons}" class="vocab-card lesson-card" th:if="${stat.first}">
             <div class="word-header">
@@ -59,6 +55,23 @@
           </div>
         </div>
       </div>
+
+      <div class="test-button-container">
+        <a
+          th:if="${not #lists.isEmpty(lessons) and lessons[0].test != null}"
+          th:href="@{/grammar-test(testId=${lessons[0].test.id})}"
+          class="start-test-btn"
+        >
+          Start Test
+        </a>
+        <button
+          th:unless="${not #lists.isEmpty(lessons) and lessons[0].test != null}"
+          class="start-test-btn disabled"
+          disabled
+        >
+          No test available
+        </button>
+      </div>
     </main>
 
     <form id="lessonForm" th:action="@{/grammar-list}" method="get">
@@ -70,16 +83,13 @@
       function selectLesson(element) {
         const lessonId = element.getAttribute("data-lesson-id");
 
-        // Update visual selection
         document.querySelectorAll(".topic-item").forEach((item) => {
           item.classList.remove("selected");
         });
         element.classList.add("selected");
 
-        // Update title
         document.getElementById("lesson-title").textContent = element.textContent;
 
-        // Update form and submit
         document.getElementById("selectedLessonId").value = lessonId;
         document.getElementById("lessonForm").submit();
       }

@@ -22,10 +22,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Vocabulary> vocabularies;
 
-    //@JsonIgnore
-    //@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    //private List<Flashcard> flashcards;
-
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<UserProgress> userProgress;
@@ -58,14 +54,6 @@ public class Category {
     public void setVocabularies(List<Vocabulary> vocabularies) {
         this.vocabularies = vocabularies;
     }
-
-    //public List<Flashcard> getFlashcards() {
-        //return flashcards;
-    //}
-
-    //public void setFlashcards(List<Flashcard> flashcards) {
-        //this.flashcards = flashcards;
-    //}
 
     public List<UserProgress> getUserProgress() {
         return userProgress;

@@ -1,187 +1,230 @@
 body {
-        display: flex;
-        font-family: "Open Sans", sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
-      .sidebar {
-        width: 150px;
-        background: #004f9e;
-        color: white;
-        height: 150vh;
-        padding: 10px;
-        overflow-y: auto;
-      }
-      .sidebar h2 {
-        text-align: center;
-      }
-      .sidebar ul {
-        list-style: none;
-        padding: 0;
-      }
-      .sidebar li {
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid white;
-      }
-      .sidebar li:hover {
-        background: #ff6600;
-      }
-      .sidebar li.selected {
-        background-color: #28a745; /* Xanh lá */
-        font-weight: bold;
-      }
-      .content {
-        flex-grow: 1;
-        padding: 20px;
-      }
-      .question img {
-        width: 100%;
-        border-radius: 5px;
-      }
-      .header {
-        background-color: #004f9e;
-        color: white;
-        padding: 15px;
-        font-size: 30px;
-        font-weight: bold;
-      }
-      .listening-container {
-        max-width: 600px;
-        margin: 30px auto;
-        background: white;
-        padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-      }
-      .image-container img {
-        width: 100%;
-        border-radius: 5px;
-      }
-      .audio-btn {
-        margin: 15px 0;
-        padding: 10px 15px;
-        background-color: #004f9e;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-      }
-      .answer-option {
-        display: block;
-        text-align: left;
-        margin: 10px 0;
-        font-size: 20px;
-      }
-      .submit-btn {
-        background-color: #ff6600;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .result-container {
-        background-color: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        width: 80%;
-        max-width: 600px;
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  min-height: 100vh;
+}
 
-      .result-container h2 {
-        color: #28a745;
-        font-size: 2em;
-        margin-bottom: 20px;
-      }
+.header {
+  background-color: #004f9e;
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
 
-      .result-container p {
-        font-size: 1.2em;
-        margin: 10px 0;
-      }
+.sidebar {
+  width: 200px;
+  background: #004f9e;
+  color: white;
+  height: calc(100vh - 60px);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 10;
+}
 
-      .result-container .score {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #004f9e;
-        margin-bottom: 30px;
-      }
+.top-list {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  padding-left: 10px;
+}
 
-      .result-container .score span {
-        color: #ff6600;
-      }
+.top-list span {
+  font-size: 22px;
+  font-weight: 600;
+}
 
-      .result-container button {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 25px;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
-      }
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 10px;
+}
 
-      .result-container button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-      }
+.back-btn:hover {
+  opacity: 0.8;
+}
 
-      .result-container button:focus {
-        outline: none;
-      }
-      .navigation {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-      }
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
 
-      .navigation button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: background-color 0.3s, transform 0.2s;
-      }
-      .navigation button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-      }
-      .navigation button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-        transform: none;
-      }
-      .navigation .hidden {
-        display: none;
-      }
-      .navigation.single-btn {
-        justify-content: flex-end;
-      }
-      .back-btn {
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-      }
-      .back-btn:hover {
-        opacity: 0.8;
-      }
+.test-item {
+  padding: 15px 20px;
+  font-size: 19px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.test-item:hover {
+  background-color: #ff6600;
+}
+
+.test-item.selected {
+  background-color: #28a745;
+  font-weight: bold;
+}
+
+.content {
+  margin-left: 200px;
+  margin-top: 60px;
+  padding: 20px;
+  flex-grow: 1;
+  min-height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.listening-container {
+  max-width: 600px;
+  width: 100%;
+  margin: 30px auto 0 auto;
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.question img,
+.image-container img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.audio-btn {
+  margin: 15px 0;
+  padding: 10px 15px;
+  background-color: #004f9e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.answer-option {
+  display: block;
+  text-align: left;
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.submit-btn {
+  background-color: #ff6600;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.result-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.result-container h2 {
+  color: #28a745;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.result-container p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.result-container .score {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #004f9e;
+  margin-bottom: 30px;
+}
+
+.result-container .score span {
+  color: #ff6600;
+}
+
+.result-container button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.result-container button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.result-container button:focus {
+  outline: none;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.navigation button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.navigation button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+.navigation button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+.navigation .hidden {
+  display: none;
+}
+.navigation.single-btn {
+  justify-content: flex-end;
+}

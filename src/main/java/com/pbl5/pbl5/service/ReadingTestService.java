@@ -18,7 +18,6 @@ public class ReadingTestService {
     @Transactional(readOnly = true)
     public List<Test> getAllReadingTests() {
         List<Test> tests = testRepository.findByTestType("Reading");
-        // Eager load questions and options
         for (Test test : tests) {
             Hibernate.initialize(test.getQuestions());
             test.getQuestions().forEach(q -> Hibernate.initialize(q.getOptions()));

@@ -257,3 +257,41 @@ body {
 .rules-label {
   margin-right: 8px;
 }
+
+.test-button-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+}
+
+.start-test-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #004f9e;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.start-test-btn:hover {
+  background-color: #ff6600;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.start-test-btn.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.start-test-btn.disabled:hover {
+  background-color: #cccccc;
+  transform: none;
+  box-shadow: none;
+}

@@ -68,7 +68,7 @@
                 <td th:text="${p.score}"></td>
                 <td><span th:text="${p.progressPercentage}"></span>%</td>
                 <td
-                  th:text="${p.completionStatus != null and p.completionStatus == T(com.pbl5.pbl5.model.UserProgress.CompletionStatus).completed ? 'Completed' : 'In progress'}"
+                  th:text="${p.completionStatus == T(com.pbl5.pbl5.model.UserProgress.CompletionStatus).completed ? 'Completed' : 'In progress'}"
                 ></td>
               </tr>
             </tbody>

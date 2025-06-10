@@ -5,14 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reading Test</title>
     <link rel="stylesheet" th:href="@{/css/readingTest.css}" />
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
 <body>
-    <header class="header">
-        <button class="back-btn" onclick="goBack()">←</button>
-    </header>
+    <div th:replace="header :: header"></div>
 
     <nav class="sidebar">
-        <h2>Reading Tests</h2>
+        <div class="top-list">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <span>Reading Tests</span>
+        </div>
         <ul id="test-list">
             <li th:each="test : ${tests}"
                 th:attr="data-test-id=${test.id}"

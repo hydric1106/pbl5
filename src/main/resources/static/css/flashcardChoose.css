@@ -12,8 +12,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%; 
-  margin-top: 80px; 
+  height: 100%;
+  margin-top: 80px;
 }
 
 .back-btn {
@@ -28,7 +28,6 @@ body {
 .back-btn:hover {
   color: #0056b3;
 }
-
 
 .title {
   font-size: 2rem;
@@ -47,7 +46,7 @@ body {
 .card-option {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 32px 36px;
   display: flex;
   flex-direction: column;
@@ -58,7 +57,7 @@ body {
 }
 
 .card-option:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
   transform: translateY(-4px) scale(1.03);
 }
 

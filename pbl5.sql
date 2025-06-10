@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2025 at 07:00 PM
+-- Generation Time: Jun 10, 2025 at 07:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,15 +102,16 @@ CREATE TABLE `grammar_lessons` (
   `type` varchar(99) NOT NULL,
   `description` text NOT NULL,
   `rules` text NOT NULL,
-  `examples` text NOT NULL
+  `examples` text NOT NULL,
+  `test_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `grammar_lessons`
 --
 
-INSERT INTO `grammar_lessons` (`id`, `lesson_name`, `type`, `description`, `rules`, `examples`) VALUES
-(1, 'Present Simple Tense', 'Tense', 'The present simple tense is used to express habits, general truths, repeated actions or unchanging situations, emotions and wishes.', 'Subject + V(s/es) + ...', 'She goes to school every day.');
+INSERT INTO `grammar_lessons` (`id`, `lesson_name`, `type`, `description`, `rules`, `examples`, `test_id`) VALUES
+(1, 'Present Simple Tense', 'Tense', 'The present simple tense is used to express habits, general truths, repeated actions or unchanging situations, emotions and wishes.', 'Subject + V(s/es) + ...', 'She goes to school every day.', 13);
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,11 @@ INSERT INTO `options` (`id`, `question_id`, `option_label`, `option_text`) VALUE
 (15, 4, 'C', 'decision'),
 (16, 4, 'D', 'investigate'),
 (17, 5, 'A', 'True'),
-(18, 5, 'B', 'False');
+(18, 5, 'B', 'False'),
+(43, 11, 'A', 'Subject + has/have + V3 + ...'),
+(44, 11, 'B', 'Subject + V(s/es) + ...'),
+(45, 11, 'C', 'Subject + will + V + ...'),
+(46, 11, 'D', 'Subject + is/are + V-ing + ...');
 
 -- --------------------------------------------------------
 
@@ -198,7 +203,8 @@ INSERT INTO `questions` (`id`, `test_id`, `question_text`, `question_type`, `ima
 (2, 1, 'Listen to the audio and choose the correct answer', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/5911589_1562638438001.png', 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/66607451.mp3', 2, 'B', 'The man is hammering something into a building frame.'),
 (3, 3, 'an association; a relationship', 'multiple_choice', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/ToeicVc_ev538.jpg', NULL, 1, 'C', 'link'),
 (4, 3, 'to receive a periodical regularly on order', 'multiple_choice', 'https://fdn.gsmarena.com/imgroot/news/20/07/spotify-duo/-727/gsmarena_002.jpg', NULL, 2, 'B', 'subscribe'),
-(5, 4, 'Sam Holden is the yoga teacher.', 'true_false', NULL, NULL, 1, 'B', 'False');
+(5, 4, 'Sam Holden is the yoga teacher.', 'true_false', NULL, NULL, 1, 'B', 'False'),
+(11, 13, 'Choose the correct rules for the Present Simple Tense', 'multiple_choice', NULL, NULL, 1, 'B', NULL);
 
 -- --------------------------------------------------------
 
@@ -211,7 +217,6 @@ CREATE TABLE `tests` (
   `test_type` varchar(255) DEFAULT NULL,
   `test_name` varchar(255) DEFAULT NULL,
   `reading_text` text DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
   `level_id` int(11) DEFAULT NULL,
   `score` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -220,11 +225,12 @@ CREATE TABLE `tests` (
 -- Dumping data for table `tests`
 --
 
-INSERT INTO `tests` (`test_id`, `test_type`, `test_name`, `reading_text`, `user_id`, `level_id`, `score`) VALUES
-(1, 'Listening', 'Listening Test 1', NULL, 1, NULL, NULL),
-(2, 'Listening', 'Listening Test 2', NULL, 1, NULL, NULL),
-(3, 'Vocabulary', 'Topic Revision Media', NULL, 1, NULL, NULL),
-(4, 'Reading', 'A poster at work', 'Come and join our lunchtime yoga class with experienced yoga teacher Divya Bridge!\n\nWhen? Every Tuesday at 1.30 p.m.\n\nWhere? Meeting Room 7\n\nHow much? £10 for four 30-minute classes.\n\nWhat to bring? Comfortable clothes. Divya will provide the yoga mats.\n\nHow to join? Write to Sam at Sam.Holden@example.com\n\n \n\nWe can only take a maximum of 20 in the room, so book now!', 1, 1, NULL);
+INSERT INTO `tests` (`test_id`, `test_type`, `test_name`, `reading_text`, `level_id`, `score`) VALUES
+(1, 'Listening', 'Listening Test 1', NULL, NULL, NULL),
+(2, 'Listening', 'Listening Test 2', NULL, NULL, NULL),
+(3, 'Vocabulary', 'Topic Revision Media', NULL, NULL, NULL),
+(4, 'Reading', 'A poster at work', 'Come and join our lunchtime yoga class with experienced yoga teacher Divya Bridge!\n\nWhen? Every Tuesday at 1.30 p.m.\n\nWhere? Meeting Room 7\n\nHow much? £10 for four 30-minute classes.\n\nWhat to bring? Comfortable clothes. Divya will provide the yoga mats.\n\nHow to join? Write to Sam at Sam.Holden@example.com\n\n \n\nWe can only take a maximum of 20 in the room, so book now!', 1, NULL),
+(13, 'Grammar', 'Grammar Test 2', NULL, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -255,17 +261,18 @@ CREATE TABLE `users` (
   `username` varchar(99) NOT NULL,
   `password` varchar(99) NOT NULL,
   `email` varchar(99) NOT NULL,
-  `image` varchar(99) NOT NULL
+  `image` varchar(99) NOT NULL,
+  `role` varchar(20) NOT NULL DEFAULT 'USER'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `image`) VALUES
-(1, 'admin01', '123456', 'admin01@gmail.com', ''),
-(2, 'Quang', '123456', 'quang1106@gmail.com', ''),
-(3, 'quang555', '$2a$10$3Sse8gBlWFc3W5cKTLDDf.p/FzWRP.rZrU89OZjbYDHNV6UI9qbzu', 'quang555@gmail.com', '');
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `image`, `role`) VALUES
+(1, 'leminh111', '123123', 'leminh01@gmail.com', '', 'USER'),
+(3, 'quang555', '$2a$10$3Sse8gBlWFc3W5cKTLDDf.p/FzWRP.rZrU89OZjbYDHNV6UI9qbzu', 'quang555@gmail.com', '', 'USER'),
+(4, 'admin1', '$2a$10$npyW8t87HMSWZTrM6N1vQ.1SrxjbLuDzloKmzA6.wO9r9uqs4Y6Aq', 'admin1@gmail.com', '', 'ADMIN');
 
 -- --------------------------------------------------------
 
@@ -316,7 +323,9 @@ INSERT INTO `user_test_results` (`id`, `user_id`, `test_id`, `question_id`, `sel
 (1, 3, 3, 3, 'C', 'C', 1, 100),
 (2, 3, 3, 4, 'B', 'B', 1, 100),
 (15, 3, 3, 3, 'C', 'C', 1, 50),
-(16, 3, 3, 4, 'B', 'B', 1, 50);
+(16, 3, 3, 4, 'B', 'B', 1, 50),
+(17, 3, 13, 11, 'B', 'B', 1, 100),
+(18, 3, 13, 11, 'B', 'B', 1, 100);
 
 -- --------------------------------------------------------
 
@@ -406,7 +415,6 @@ ALTER TABLE `questions`
 --
 ALTER TABLE `tests`
   ADD PRIMARY KEY (`test_id`),
-  ADD KEY `user_id` (`user_id`),
   ADD KEY `level_id` (`level_id`);
 
 --
@@ -486,19 +494,25 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `tests`
+--
+ALTER TABLE `tests`
+  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_progress`
@@ -510,7 +524,7 @@ ALTER TABLE `user_progress`
 -- AUTO_INCREMENT for table `user_test_results`
 --
 ALTER TABLE `user_test_results`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `vocabulary`
@@ -546,7 +560,6 @@ ALTER TABLE `questions`
 -- Constraints for table `tests`
 --
 ALTER TABLE `tests`
-  ADD CONSTRAINT `tests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tests_ibfk_2` FOREIGN KEY (`level_id`) REFERENCES `levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

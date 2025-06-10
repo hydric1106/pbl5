@@ -13,11 +13,6 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //@JsonIgnore
-    //@ManyToOne
-    //@JoinColumn(name = "user_id", nullable = false)
-    //private User user;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "vocabulary_id", nullable = true)
@@ -41,11 +36,6 @@ public class Flashcard {
     @Column(name = "audio", columnDefinition = "TEXT", nullable = false)
     private String audio;
 
-    //@JsonIgnore
-    //@ManyToOne
-    //@JoinColumn(name = "category_id")
-    //private Category category;
-
     @Column(name = "flccategory_id")
     private Integer flccategoryId;
 
@@ -60,14 +50,6 @@ public class Flashcard {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    //public User getUser() {
-        //return user;
-    //}
-
-    //public void setUser(User user) {
-        //this.user = user;
-    //}
 
     public Vocabulary getVocabulary() {
         return vocabulary;
@@ -124,14 +106,6 @@ public class Flashcard {
     public void setAudio(String audio) {
         this.audio = audio;
     }
-
-    //public Category getCategory() {
-        //return category;
-    //}
-
-    //public void setCategory(Category category) {
-        //this.category = category;
-    //}
 
     public Integer getUserId() {
         return userId;

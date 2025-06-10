@@ -27,11 +27,6 @@ public class Test {
     @Column(name = "reading_text", columnDefinition = "TEXT")
     private String readingText;
 
-    @JsonBackReference("test-user")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @JsonManagedReference("test-questions")
     @OneToMany(mappedBy = "test", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OrderBy("questionOrder")
@@ -45,7 +40,11 @@ public class Test {
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "level_id")
+    private Level level;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -87,14 +86,6 @@ public class Test {
         this.readingText = readingText;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Question> getQuestions() {
         return questions;
     }
@@ -109,5 +100,13 @@ public class Test {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 }

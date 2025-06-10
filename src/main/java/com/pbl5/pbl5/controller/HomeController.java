@@ -8,11 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index"; // Trả về file templates/index.html
+        return "index"; 
     }
-
-    // @GetMapping("/listening-test")
-    // public String listeningTest() {
-    //     return "listeningTest"; // Trả về file templates/listeningTest.html
-    // }
 }

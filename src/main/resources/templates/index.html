@@ -43,16 +43,24 @@
             <span class="dropdown-arrow">&#9662;</span>
           </div>
           <div class="user-dropdown-menu">
-            <a th:href="@{/profile}" class="user-dropdown-item">
-              <i class="fas fa-user-circle"></i> Profile
+          <a th:href="@{/profile}" class="user-dropdown-item">
+            <i class="fas fa-user-circle"></i> Profile
+          </a>
+          <a th:href="@{/settings}" class="user-dropdown-item">
+            <i class="fas fa-cog"></i> Settings
+          </a>
+          <th:block th:if="${session.currentUser != null and session.currentUser.role == 'ADMIN'}">
+            <a th:href="@{/view-user-list}" class="user-dropdown-item">
+              <i class="fas fa-users-cog"></i> User Management
             </a>
-            <a th:href="@{/settings}" class="user-dropdown-item">
-              <i class="fas fa-cog"></i> Settings
+            <a th:href="@{/add-test}" class="user-dropdown-item">
+              <i class="fas fa-plus-circle"></i> Add new test
             </a>
-            <a th:href="@{/logout}" class="user-dropdown-item">
-              <i class="fas fa-sign-out-alt"></i> Sign out
-            </a>
-          </div>
+          </th:block>
+          <a th:href="@{/logout}" class="user-dropdown-item">
+            <i class="fas fa-sign-out-alt"></i> Sign out
+          </a>
+        </div>
         </div>
       </div>
     </header>
@@ -120,7 +128,7 @@
             </li>
             <li class="last">
               <a
-                href="/grammar/english-grammar-reference"
+                href="/grammar-test"
                 data-drupal-link-system-path="taxonomy/term/2942"
                 >Grammar tests</a
               >
@@ -141,18 +149,11 @@
                 >Learn vocabulary by topics</a
               >
             </li>
-            <li>
-              <a
-                href="/flashcard-choose"
-                data-drupal-link-system-path="taxonomy/term/2768"
-                >Learn with flashcards</a
-              >
-            </li>
             <li class="last">
               <a
-                href="/vocab-test"
+                href="/flashcard-choose"
                 data-drupal-link-system-path="taxonomy/term/2395"
-                >Vocabulary tests</a
+                >Learn with flashcards</a
               >
             </li>
           </ul>
@@ -345,7 +346,6 @@
         this.classList.toggle('active');
       });
       
-      // Đóng dropdown khi click bên ngoài
       document.addEventListener('click', function() {
         if (userDropdown.classList.contains('active')) {
           userDropdown.classList.remove('active');
@@ -354,5 +354,24 @@
     }
   });
     </script>
+    <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+    /*[[${session.currentUser == null}]]*/ 
+    var notLoggedIn = /*[[${session.currentUser == null}]]*/ false;
+    if (notLoggedIn) {
+        document.body.addEventListener('click', function(e) {
+            if (
+                !e.target.closest('.login-container') &&
+                !e.target.closest('.register-container') &&
+                !e.target.closest('a.btn')
+            ) {
+                e.preventDefault();
+                alert('Please login');
+                window.location.href = '/login';
+            }
+        }, true);
+    }
+});
+</script>
   </body>
 </html>

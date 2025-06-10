@@ -99,17 +99,14 @@
       function selectCategory(element) {
         const categoryId = element.getAttribute("data-category-id");
 
-        // Update visual selection
         document.querySelectorAll(".topic-item").forEach((item) => {
           item.classList.remove("selected");
         });
         element.classList.add("selected");
 
-        // Update title
         document.getElementById("topic-title").textContent =
           element.textContent;
 
-        // Update form and submit
         document.getElementById("selectedCategoryId").value = categoryId;
         document.getElementById("categoryForm").submit();
       }

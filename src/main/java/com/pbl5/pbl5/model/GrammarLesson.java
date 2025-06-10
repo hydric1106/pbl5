@@ -24,6 +24,10 @@ public class GrammarLesson {
     @Column(name = "rules", columnDefinition = "TEXT")
     private String rules;
 
+    @ManyToOne
+    @JoinColumn(name = "test_id")
+    private Test test;
+
     // Getters and Setters
 
     public Integer getId() {
@@ -72,5 +76,13 @@ public class GrammarLesson {
 
     public void setRules(String rules) {
         this.rules = rules;
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
     }
 }
